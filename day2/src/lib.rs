@@ -1,58 +1,40 @@
-use std::str::FromStr;
+use once_cell::sync::Lazy;
 
-use utility::Solvable;
-
-fn to_digit(s: &str) -> u8 {
-  s.chars().last().unwrap() as u8 - 0x30
+pub enum Move {
+  Forward(u32),
+  Up(u32),
+  Down(u32)
 }
 
-pub enum Movement {
-  Forward(u8),
-  Up(u8),
-  Down(u8)
-}
-
-impl FromStr for Movement {
-  type Err = ();
-
-  fn from_str(input: &str) -> Result<Self, Self::Err> {
-    Ok(match input.split_once(' ').unwrap_or_default() {
-      ("forward", i) => Movement::Forward(to_digit(i)),
-      ("up", i) => Movement::Up(to_digit(i)),
-      ("down", i) => Movement::Down(to_digit(i)),
-      _ => panic!("Failed to parse day2/input_a.txt")
+static MOVES: Lazy<Vec<Move>> = Lazy::new(|| {
+  include_str!("../input.txt")
+    .lines()
+    .map(|l| l.split_once(' ').unwrap())
+    .map(|(d, i)| match (d, i.parse::<u32>().unwrap()) {
+      ("forward", i) => Move::Forward(i),
+      ("up", i) => Move::Up(i),
+      ("down", i) => Move::Down(i),
+      _ => unreachable!()
     })
-  }
+    .collect()
+});
+
+pub fn solve_a() -> u32 {
+  let pos = MOVES.iter().fold((0, 0), |(h, d), m| match m {
+    Move::Forward(i) => (h + i, d),
+    Move::Up(i) => (h, d - i),
+    Move::Down(i) => (h, d + i)
+  });
+
+  pos.0 * pos.1
 }
 
-pub struct Day2(Vec<Movement>);
+pub fn solve_b() -> u32 {
+  let pos = MOVES.iter().fold((0, 0, 0), |(h, d, a), m| match m {
+    Move::Forward(i) => (h + i, d + (a * i), a),
+    Move::Up(i) => (h, d, a - i),
+    Move::Down(i) => (h, d, a + i)
+  });
 
-impl Solvable for Day2 {
-  fn new() -> Day2 {
-    Day2(include_str!("../input.txt").lines().map(|x| x.parse().unwrap()).collect())
-  }
-
-  fn name() -> &'static str {
-    "Day 2"
-  }
-
-  fn solve_a(&self) -> String {
-    let pos = self.0.iter().fold((0u32, 0u32), |(h, d), x| match x {
-      Movement::Forward(x) => (h + (*x as u32), d),
-      Movement::Up(x) => (h, d - (*x as u32)),
-      Movement::Down(x) => (h, d + (*x as u32))
-    });
-
-    (pos.0 * pos.1).to_string()
-  }
-
-  fn solve_b(&self) -> String {
-    let pos = self.0.iter().fold((0u32, 0u32, 0u32), |(h, d, a), x| match x {
-      Movement::Forward(x) => (h + (*x as u32), d + (a * (*x as u32)), a),
-      Movement::Up(x) => (h, d, a - (*x as u32)),
-      Movement::Down(x) => (h, d, a + (*x as u32))
-    });
-
-    (pos.0 * pos.1).to_string()
-  }
+  pos.0 * pos.1
 }

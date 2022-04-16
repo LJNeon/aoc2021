@@ -1,15 +1,9 @@
-use day1::*;
-use day2::*;
-use utility::Solvable;
-
 fn main() {
   println!("|----------|------------|------------|");
-  println!("| {0: <8} | {1: <10} | {2: <10} |", "DAY", "ANSWER A", "ANSWER B");
+  println!("| {0:^8} | {1:^10} | {2:^10} |", "DAY", "ANSWER A", "ANSWER B");
   println!("|----------|------------|------------|");
-  let one = Day1::new();
-  println!("| {0: <8} | {1: <10} | {2: <10} |", Day1::name(), one.solve_a(), one.solve_b());
-  let two = Day2::new();
-  println!("| {0: <8} | {1: <10} | {2: <10} |", Day2::name(), two.solve_a(), two.solve_b());
+  println!("| {0:^8} | {1:<10} | {2:<10} |", "Day 1", day1::solve_a(), day1::solve_b());
+  println!("| {0:^8} | {1:<10} | {2:<10} |", "Day 2", day2::solve_a(), day2::solve_b());
+  println!("| {0:^8} | {1:<10} | {2:<10} |", "Day 3", day3::solve_a(), day3::solve_b());
   println!("|----------|------------|------------|");
-  println!("\nDone!");
 }

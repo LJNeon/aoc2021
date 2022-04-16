@@ -8,10 +8,10 @@ publish = false
 [dependencies]
 day1 = {path = './day1'}
 day2 = {path = './day2'}
-utility = {path = './utility'}
+day3 = {path = './day3'}
 
 [workspace]
-members = ['day1', 'day2', 'utility']
+members = ['day1', 'day2', 'day3']
 
 [profile.dev]
 incremental = true

@@ -4,4 +4,4 @@ version = '0.1.0'
 edition = '2021'
 
 [dependencies]
-utility = {path = '../utility'}
+once_cell = '1.10'
