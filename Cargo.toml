@@ -1,0 +1,17 @@
+[package]
+name = 'aoc2021'
+authors = ['LJ Talbot <eljayt@protonmail.com>']
+version = '0.1.0'
+edition = '2021'
+publish = false
+
+[dependencies]
+day1 = {path = './day1'}
+day2 = {path = './day2'}
+utility = {path = './utility'}
+
+[workspace]
+members = ['day1', 'day2', 'utility']
+
+[profile.dev]
+incremental = true
