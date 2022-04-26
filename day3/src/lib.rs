@@ -4,10 +4,7 @@ const WIDTH: usize = 12;
 const LENGTH: usize = 1000;
 
 fn input() -> [u32; LENGTH] {
-  include_str!("../../inputs/day3.txt")
-    .lines()
-    .map(|l| u32::from_str_radix(l, 2).unwrap())
-    .into_array()
+  include_str!("../../inputs/day3.txt").lines().map(|l| u32::from_str_radix(l, 2).unwrap()).into_array()
 }
 
 fn get_bit(n: &u32, i: usize) -> u32 {
@@ -34,7 +31,7 @@ fn search(list: &mut Vec<u32>, i: usize, gt: bool) {
     return;
   }
 
-  let which = ((list.iter().filter(|n| get_bit(n, i) == 1).count() >= list.len() / 2) == gt) as u32;
+  let which = ((list.iter().filter(|n| get_bit(n, i) == 1).count() >= (list.len() + 1) / 2) == gt) as u32;
 
   list.retain(|n| get_bit(n, i) == which);
 }
