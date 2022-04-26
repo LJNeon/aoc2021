@@ -1,12 +1,15 @@
-use once_cell::sync::Lazy;
+use utility::IntoArray;
 
-static NUMBERS: Lazy<Vec<u16>> =
-  Lazy::new(|| include_str!("../input.txt").lines().map(|n| n.parse().unwrap()).collect());
+const LENGTH: usize = 2000;
+
+fn input() -> [u16; LENGTH] {
+  include_str!("../../inputs/day1.txt").lines().map(|n| n.parse().unwrap()).into_array()
+}
 
 pub fn solve_a() -> usize {
-  NUMBERS.windows(2).filter(|n| n[0] < n[1]).count()
+  input().windows(2).filter(|n| n[0] < n[1]).count()
 }
 
 pub fn solve_b() -> usize {
-  NUMBERS.windows(4).filter(|n| n[0] < n[3]).count()
+  input().windows(4).filter(|n| n[0] < n[3]).count()
 }

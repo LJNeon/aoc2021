@@ -11,7 +11,7 @@ day2 = {path = './day2'}
 day3 = {path = './day3'}
 
 [workspace]
-members = ['day1', 'day2', 'day3']
+members = ['day1', 'day2', 'day3', 'utility']
 
 [profile.dev]
 incremental = true

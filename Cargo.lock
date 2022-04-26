@@ -15,25 +15,23 @@ dependencies = [
 name = "day1"
 version = "0.1.0"
 dependencies = [
- "once_cell",
+ "utility",
 ]
 
 [[package]]
 name = "day2"
 version = "0.1.0"
 dependencies = [
- "once_cell",
+ "utility",
 ]
 
 [[package]]
 name = "day3"
 version = "0.1.0"
 dependencies = [
- "once_cell",
+ "utility",
 ]
 
 [[package]]
-name = "once_cell"
-version = "1.10.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "87f3e037eac156d1775da914196f0f37741a274155e34a0b7e427c35d2a2ecb9"
+name = "utility"
+version = "0.1.0"

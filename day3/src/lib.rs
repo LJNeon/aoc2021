@@ -1,11 +1,14 @@
-use once_cell::sync::Lazy;
+use utility::IntoArray;
 
 const WIDTH: usize = 12;
-const THRESHOLD: u32 = 500;
+const LENGTH: usize = 1000;
 
-static NUMBERS: Lazy<Vec<u32>> = Lazy::new(|| {
-  include_str!("../input.txt").lines().map(|l| u32::from_str_radix(l, 2).unwrap()).collect()
-});
+fn input() -> [u32; LENGTH] {
+  include_str!("../../inputs/day3.txt")
+    .lines()
+    .map(|l| u32::from_str_radix(l, 2).unwrap())
+    .into_array()
+}
 
 fn get_bit(n: &u32, i: usize) -> u32 {
   (n & (1 << i)) >> i
@@ -13,52 +16,36 @@ fn get_bit(n: &u32, i: usize) -> u32 {
 
 pub fn solve_a() -> u32 {
   let mut count = vec![0; WIDTH];
+  let total = (LENGTH / 2) as u32;
 
-  for num in NUMBERS.iter() {
+  for num in input() {
     for i in 0..WIDTH {
-      count[i] += get_bit(num, i);
+      count[i] += get_bit(&num, i);
     }
   }
 
-  let gamma: u32 = count.into_iter().enumerate().map(|(i, n)| ((n >= THRESHOLD) as u32) << i).sum();
+  let gamma: u32 = count.into_iter().enumerate().map(|(i, n)| ((n >= total) as u32) << i).sum();
 
   gamma * (!gamma & ((1 << WIDTH) - 1))
 }
 
-fn count(vec: &Vec<u32>, i: usize) -> (u32, u32) {
-  let mut result: (u32, u32) = (0, 0);
-
-  for num in vec {
-    result.1 += 1;
-    result.0 += get_bit(num, i);
+fn search(list: &mut Vec<u32>, i: usize, gt: bool) {
+  if list.len() == 1 {
+    return;
   }
 
-  result
+  let which = ((list.iter().filter(|n| get_bit(n, i) == 1).count() >= list.len() / 2) == gt) as u32;
+
+  list.retain(|n| get_bit(n, i) == which);
 }
 
 pub fn solve_b() -> u32 {
-  let (mut generator, mut scrubber) = (NUMBERS.clone(), NUMBERS.clone());
+  let mut generator = input().to_vec();
+  let mut scrubber = generator.clone();
 
   for i in (0..WIDTH).rev() {
-    let mut amount = count(&generator, i);
-
-    if amount.1 > 1 {
-      let which = (amount.0 >= amount.1 / 2) as u32;
-
-      generator.retain(|n| get_bit(n, i) == which);
-    }
-
-    let generator_done = amount.1 == 1;
-
-    amount = count(&scrubber, i);
-
-    if amount.1 > 1 {
-      let which = (amount.0 < amount.1 / 2) as u32;
-
-      scrubber.retain(|n| get_bit(n, i) == which);
-    } else if generator_done {
-      break;
-    }
+    search(&mut generator, i, true);
+    search(&mut scrubber, i, false);
   }
 
   generator[0] * scrubber[0]
