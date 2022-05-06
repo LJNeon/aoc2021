@@ -7,7 +7,7 @@ use utility::IntoArray;
 
 const LENGTH: usize = 500;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Clone, Copy)]
 struct Line {
   x: u16,
   y: u16,
