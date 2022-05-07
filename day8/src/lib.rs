@@ -7,9 +7,9 @@ fn input<'a>() -> [&'a str; LENGTH] {
 }
 
 pub fn solve_a() -> usize {
-  input().iter().fold(0, |total, l| {
-    total + l[61..].split_whitespace().filter(|n| n.len() == 2 || n.len() == 3 || n.len() == 4 || n.len() == 7).count()
-  })
+  input()
+    .iter()
+    .fold(0, |total, l| total + l[61..].split_whitespace().filter(|n| matches!(n.len(), 2 | 3 | 4 | 7)).count())
 }
 
 fn parse_digit(digit: &str, four: &str, seven: &str) -> u32 {
@@ -21,7 +21,7 @@ fn parse_digit(digit: &str, four: &str, seven: &str) -> u32 {
     5 => {
       if seven.chars().all(|c| digit.contains(c)) {
         3
-      } else if four.chars().filter(|&c| digit.contains(c)).count() == 2 {
+      } else if four.matches(|c| digit.contains(c)).count() == 2 {
         2
       } else {
         5
