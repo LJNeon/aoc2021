@@ -2,14 +2,14 @@ use utility::IntoArray;
 
 const LENGTH: usize = 200;
 
-fn input<'a>() -> [&'a str; LENGTH] {
-  include_str!("../../inputs/day8.txt").lines().into_array()
+fn input<'a>() -> [(&'a str, &'a str); LENGTH] {
+  include_str!("../../inputs/day8.txt").lines().map(|l| l.split_once(" | ").unwrap()).into_array()
 }
 
 pub fn solve_a() -> usize {
   input()
     .iter()
-    .fold(0, |total, l| total + l[61..].split_whitespace().filter(|n| matches!(n.len(), 2 | 3 | 4 | 7)).count())
+    .fold(0, |total, (_, l)| total + l.split_whitespace().filter(|n| matches!(n.len(), 2 | 3 | 4 | 7)).count())
 }
 
 fn parse_digit(digit: &str, four: &str, seven: &str) -> u32 {
@@ -41,8 +41,7 @@ fn parse_digit(digit: &str, four: &str, seven: &str) -> u32 {
 }
 
 pub fn solve_b() -> u32 {
-  input().into_iter().fold(0, |total, line| {
-    let (key, numbers) = line.split_once(" | ").unwrap();
+  input().into_iter().fold(0, |total, (key, numbers)| {
     let four = key.split_whitespace().find(|n| n.len() == 4).unwrap();
     let seven = key.split_whitespace().find(|n| n.len() == 3).unwrap();
 
